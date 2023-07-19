@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Parent</title>
+  </head>
+  <body style="display: flex; height: 100vh; margin: 0">
+    <div style="display: flex; flex: 1; flex-direction: column; padding: 8px">
+      <h1>Parent</h1>
+      <div id="message-box"></div>
+      <iframe src="/child-iframe.html" style="flex: 1"></iframe>
+    </div>
+
+    <script>
+      window.addEventListener("message", function (event) {
+        try {
+          const parsed = JSON.parse(event.data);
+          logOnPage(event.data);
+        } catch (error) {
+          logOnPage(`Error parsing message as JSON in parent iframe - ${error}`);
+        }
+      });
+
+      function logOnPage(str) {
+        console.log(str);
+        document.getElementById("message-box").textContent = str;
+      }
+    </script>
+  </body>
+</html>

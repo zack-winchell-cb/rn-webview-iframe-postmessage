@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Child</title>
+  </head>
+  <body>
+    <h1>Child</h1>
+    <button onClick="window.sendMessage()">Send message</button>
+    <div id="message-box"></div>
+    <script>
+      function sendMessage() {
+        if (window.parent?.ReactNativeWebView?.postMessage) {
+          logOnPage("Parent iframe has RNWV postMessage");
+          const message = JSON.stringify({ type: "React Native" });
+          window.parent.ReactNativeWebView.postMessage(message);
+        }
+
+        if (window.parent?.postMessage) {
+          logOnPage("Parent iframe has native web postMessage");
+          const message = JSON.stringify({ type: "web" });
+          window.parent.postMessage(message, window.location.origin);
+        }
+      }
+
+      function logOnPage(str) {
+        console.log(str);
+        document.getElementById("message-box").textContent = str;
+      }
+    </script>
+  </body>
+</html>
